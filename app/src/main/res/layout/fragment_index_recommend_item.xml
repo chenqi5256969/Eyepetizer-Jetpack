@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="textClickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="resp"
+            type="com.revenco.eyepetizer_jetpack.net.bean.resp.HomeDataResp.Issue.Item.Data" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="10dp"
+        app:cardBackgroundColor="@android:color/holo_red_light"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="6dp"
+       >
+
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:onClick="@{textClickListener}"
+            android:text="@{resp.playUrl}"
+            android:textColor="@android:color/white"
+            android:textSize="12dp" />
+    </androidx.cardview.widget.CardView>
+</layout>
