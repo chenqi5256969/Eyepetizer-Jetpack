@@ -5,11 +5,11 @@ import com.revenco.eyepetizer_jetpack.net.bean.resp.HomeDataResp
 import com.revenco.eyepetizer_jetpack.net.bean.resp.base.RESULT
 
 class HomeRepository : BaseRepository() {
-    suspend fun getHomeData(): RESULT<HomeDataResp> {
-        return handleHomeResponse()
+    suspend fun getHomeData(url: String): RESULT<HomeDataResp> {
+        return safeApiCall { handleHomeResponse(url) }
     }
 
-    private suspend fun handleHomeResponse(): RESULT<HomeDataResp> {
-        return handleResponse(RetrofitClient.getInstance().createApi().getHomeData())
+    private suspend fun handleHomeResponse(url: String): RESULT<HomeDataResp> {
+        return handleResponse(RetrofitClient.getInstance().createApi().getHomeData(url))
     }
 }

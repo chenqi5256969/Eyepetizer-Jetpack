@@ -16,7 +16,9 @@ class IndexRecommendFragment : BaseFragment<HomeViewModel>() {
 
     override fun initView() {
         adapter = IndexRecommendRecyclerAdapter()
-
+        swipeRefreshLayout.setOnRefreshListener {
+            mViewModel.getHomeData()
+        }
     }
 
     override fun startObserver() {
@@ -24,15 +26,14 @@ class IndexRecommendFragment : BaseFragment<HomeViewModel>() {
         mViewModel.getUiState()
             .observe(viewLifecycleOwner,
                 Observer<HomeViewModel.HomeUiState?> { t ->
-                    if (t!!.showProgress) {
-                        showProgress()
-                    } else {
-                        dismissProgress()
-                    }
+                    swipeRefreshLayout.isRefreshing = t!!.showProgress
                     t.data?.also {
-                        adapter.submitList(t.data.value)
+                        t.data.observe(viewLifecycleOwner, Observer {
+                            adapter.submitList(it)
+                        })
                         indexRecommendRecycler.adapter = adapter
                     }
+
                 })
     }
 

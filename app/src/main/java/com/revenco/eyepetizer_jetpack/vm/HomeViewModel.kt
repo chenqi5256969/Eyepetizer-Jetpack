@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.DataSource
-import androidx.paging.ItemKeyedDataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.revenco.eyepetizer_jetpack.net.bean.resp.HomeDataResp
@@ -19,6 +18,7 @@ import kotlinx.coroutines.withContext
 
 class HomeViewModel : BaseViewModel() {
     private var uiState = MutableLiveData<HomeUiState>()
+    private val url = "v2/feed?num=2&udid=26868b32e808498db32fd51fb422d00175e179df&vc=83"
 
     fun getUiState(): MutableLiveData<HomeUiState> {
         return uiState
@@ -31,15 +31,15 @@ class HomeViewModel : BaseViewModel() {
             {
                 providerHomeUiState(showProgress = true)
             }
-
-            val homeData = HomeRepository().getHomeData()
-
+            val homeData = HomeRepository().getHomeData(url)
             withContext(Dispatchers.Main)
             {
                 if (homeData is RESULT.OnSuccess) {
                     val sourceFactory =
-                        HandleHomeDataSourceFactory(homeData.data.issueList[0].itemList)
-                    val liveData = LivePagedListBuilder(sourceFactory, 2).build()
+                        HandleHomeDataSourceFactory(homeDataResp = homeData.data)
+                    val config = PagedList.Config.Builder().setPageSize(2)
+                        .setInitialLoadSizeHint(2).build()
+                    val liveData = LivePagedListBuilder(sourceFactory, config).build()
                     providerHomeUiState(showProgress = false, data = liveData)
                 } else if (homeData is RESULT.OnError) {
                     providerHomeUiState(
@@ -70,15 +70,11 @@ class HomeViewModel : BaseViewModel() {
         val errorCode: String?
     )
 
-    inner class HandleHomeDataSourceFactory constructor(val itemList: List<HomeDataResp.Issue.Item>) :
+    inner class HandleHomeDataSourceFactory constructor(private val homeDataResp: HomeDataResp) :
         DataSource.Factory<String, HomeDataResp.Issue.Item>() {
-        private val sourceLiveData =
-            MutableLiveData<ItemKeyedDataSource<String, HomeDataResp.Issue.Item>>()
 
         override fun create(): DataSource<String, HomeDataResp.Issue.Item> {
-            val dataSource = ItemKeyedSubredditDataSource(itemList)
-            sourceLiveData.postValue(dataSource)
-            return dataSource
+            return ItemKeyedSubredditDataSource(homeDataResp)
         }
     }
 }
