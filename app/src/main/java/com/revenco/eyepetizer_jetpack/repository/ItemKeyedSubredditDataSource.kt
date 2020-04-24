@@ -16,7 +16,7 @@ class ItemKeyedSubredditDataSource constructor(private var homeDataResp: HomeDat
         params: LoadInitialParams<String>,
         callback: LoadInitialCallback<HomeDataResp.Issue.Item>
     ) {
-        itemList=itemList.drop(1)
+        itemList = itemList.drop(1)
         callback.onResult(itemList)
     }
 
@@ -30,7 +30,7 @@ class ItemKeyedSubredditDataSource constructor(private var homeDataResp: HomeDat
             {
                 if (data is RESULT.OnSuccess) {
                     var moreItemList = data.data.issueList[0].itemList
-                    moreItemList= moreItemList.drop(1)
+                    moreItemList = moreItemList.drop(1)
                     callback.onResult(moreItemList)
                     homeDataResp = data.data
                 }

@@ -10,3 +10,5 @@ const val Write_ConnectTime_Out = 30000L
 const val MAX_CACHE_SIZE = 10 * 1024 * 1024L
 
 const val BASE_URL = "http://baobab.kaiyanapp.com/api/"
+
+const val LogTag = "EyeLog===>"

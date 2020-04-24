@@ -12,7 +12,7 @@ import com.revenco.eyepetizer_jetpack.adapters.FIND_FRAGMENT_INDEX
 import com.revenco.eyepetizer_jetpack.adapters.IndexFragmentAdapter
 import com.revenco.eyepetizer_jetpack.adapters.RECOMMEND_FRAGMENT_INDEX
 import com.revenco.eyepetizer_jetpack.databinding.FragmentIndexBinding
-import com.revenco.eyepetizer_jetpack.utils.ktx.invokeTabLocation
+import com.revenco.eyepetizer_jetpack.ktx.invokeTabLocation
 
 class IndexFragment : Fragment() {
 

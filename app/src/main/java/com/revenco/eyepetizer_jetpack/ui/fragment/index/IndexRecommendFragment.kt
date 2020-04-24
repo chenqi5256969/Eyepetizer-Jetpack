@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.fragment_index_recommend.*
 
 class IndexRecommendFragment : BaseFragment<HomeViewModel>() {
     private lateinit var adapter: IndexRecommendRecyclerAdapter
+
     override fun providerVM(): HomeViewModel {
         return InjectorUtils.providerHomeViewModelFactory().create(HomeViewModel::class.java)
     }
@@ -31,10 +32,10 @@ class IndexRecommendFragment : BaseFragment<HomeViewModel>() {
                         t.data.observe(viewLifecycleOwner, Observer {
                             adapter.submitList(it)
                         })
-                        indexRecommendRecycler.adapter = adapter
                     }
 
                 })
+        indexRecommendRecycler.adapter = adapter
     }
 
     override fun generateLayout(): Int {
