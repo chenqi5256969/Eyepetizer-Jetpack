@@ -10,6 +10,7 @@ import com.revenco.eyepetizer_jetpack.net.bean.resp.HomeDataResp
 import com.revenco.eyepetizer_jetpack.net.bean.resp.base.RESULT
 import com.revenco.eyepetizer_jetpack.repository.HomeRepository
 import com.revenco.eyepetizer_jetpack.repository.ItemKeyedSubredditDataSource
+import com.revenco.eyepetizer_jetpack.utils.LogUtil
 import com.revenco.eyepetizer_jetpack.vm.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,6 +20,8 @@ import kotlinx.coroutines.withContext
 class HomeViewModel : BaseViewModel() {
     private var uiState = MutableLiveData<HomeUiState>()
     private val url = "v2/feed?num=2&udid=26868b32e808498db32fd51fb422d00175e179df&vc=83"
+
+    lateinit var sourceFactory: HandleHomeDataSourceFactory
 
     fun getUiState(): MutableLiveData<HomeUiState> {
         return uiState
@@ -35,7 +38,7 @@ class HomeViewModel : BaseViewModel() {
             withContext(Dispatchers.Main)
             {
                 if (homeData is RESULT.OnSuccess) {
-                    val sourceFactory =
+                    sourceFactory =
                         HandleHomeDataSourceFactory(homeDataResp = homeData.data)
                     val config = PagedList.Config.Builder().setPageSize(2)
                         .setInitialLoadSizeHint(2).build()
@@ -53,6 +56,21 @@ class HomeViewModel : BaseViewModel() {
         }
     }
 
+    fun refresh() {
+        LogUtil.i("我被刷新了")
+        if (::sourceFactory.isInitialized) {
+            LogUtil.i("我被刷新了1")
+            sourceFactory.sourceLiveData.value?.invalidate()
+            val config = PagedList.Config.Builder().setPageSize(2)
+                .setInitialLoadSizeHint(2).build()
+            val liveData = LivePagedListBuilder(sourceFactory, config).build()
+            providerHomeUiState(showProgress = false, data = liveData)
+        }else
+        {
+            getHomeData()
+        }
+    }
+
     private fun providerHomeUiState(
         showProgress: Boolean = true,
         data: LiveData<PagedList<HomeDataResp.Issue.Item>>? = null,
@@ -65,16 +83,18 @@ class HomeViewModel : BaseViewModel() {
 
     data class HomeUiState constructor(
         val showProgress: Boolean,
-        val data: LiveData<PagedList<HomeDataResp.Issue.Item>>?,
-        val errorMsg: String?,
-        val errorCode: String?
+        val data: LiveData<PagedList<HomeDataResp.Issue.Item>>? = null,
+        val errorMsg: String? = null,
+        val errorCode: String? = null
     )
 
     inner class HandleHomeDataSourceFactory constructor(private val homeDataResp: HomeDataResp) :
         DataSource.Factory<String, HomeDataResp.Issue.Item>() {
-
+        val sourceLiveData = MutableLiveData<ItemKeyedSubredditDataSource>()
         override fun create(): DataSource<String, HomeDataResp.Issue.Item> {
-            return ItemKeyedSubredditDataSource(homeDataResp)
+            val source = ItemKeyedSubredditDataSource(homeDataResp)
+            sourceLiveData.postValue(source)
+            return source
         }
     }
 }

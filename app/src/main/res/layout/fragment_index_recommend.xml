@@ -12,11 +12,12 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragment.index.IndexRecommendFragment">
 
-        <com.revenco.eyepetizer_jetpack.widget.refresh.MaterialRefreshLayout
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/swipeRefreshLayout"
-            android:padding="10dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/indexRecommendRecycler"
@@ -25,7 +26,6 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/fragment_index_recommend_item" />
 
-        </com.revenco.eyepetizer_jetpack.widget.refresh.MaterialRefreshLayout>
-
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
     </FrameLayout>
 </layout>

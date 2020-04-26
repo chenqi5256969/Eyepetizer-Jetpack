@@ -14,6 +14,7 @@ import com.revenco.eyepetizer_jetpack.config.GlideApp
 import com.revenco.eyepetizer_jetpack.databinding.FragmentIndexRecommendItemBinding
 import com.revenco.eyepetizer_jetpack.ktx.loadUrl
 import com.revenco.eyepetizer_jetpack.net.bean.resp.HomeDataResp
+import com.revenco.eyepetizer_jetpack.utils.LogUtil
 
 class IndexRecommendRecyclerAdapter :
     PagedListAdapter<HomeDataResp.Issue.Item, IndexRecommendRecyclerAdapter.ViewHolder>(
@@ -49,8 +50,7 @@ class IndexRecommendRecyclerAdapter :
         fun bind(data: HomeDataResp.Issue.Item.Data) {
             binding.bigImage.loadUrl(
                 data?.cover?.feed,
-                isCrop = false,
-                thumbnailUrl = data?.cover?.homepage
+                isCrop = false
             )!!
             binding.userIcon.loadUrl(data?.author?.icon, isCrop = true)
             binding.data = data
@@ -66,6 +66,7 @@ class IndexRecommendRecyclerAdapter :
             oldItem: HomeDataResp.Issue.Item,
             newItem: HomeDataResp.Issue.Item
         ): Boolean {
+            LogUtil.i("areItemsTheSame======>${oldItem.id == newItem.id}")
             return oldItem.id == newItem.id
         }
 
@@ -73,6 +74,7 @@ class IndexRecommendRecyclerAdapter :
             oldItem: HomeDataResp.Issue.Item,
             newItem: HomeDataResp.Issue.Item
         ): Boolean {
+            LogUtil.i("areContentsTheSame======>${oldItem.id == newItem.id}")
             return oldItem.id == newItem.id
         }
 

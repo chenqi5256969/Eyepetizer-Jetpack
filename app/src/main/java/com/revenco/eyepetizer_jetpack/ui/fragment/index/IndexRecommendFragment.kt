@@ -1,11 +1,13 @@
 package com.revenco.eyepetizer_jetpack.ui.fragment.index
 
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.revenco.eyepetizer_jetpack.R
 import com.revenco.eyepetizer_jetpack.adapters.IndexRecommendRecyclerAdapter
 import com.revenco.eyepetizer_jetpack.ui.fragment.base.BaseFragment
 import com.revenco.eyepetizer_jetpack.vm.HomeViewModel
 import com.revenco.eyepetizer_jetpack.vm.base.InjectorUtils
+import com.revenco.eyepetizer_jetpack.widget.LoadingHeadView
 import kotlinx.android.synthetic.main.fragment_index_recommend.*
 
 class IndexRecommendFragment : BaseFragment<HomeViewModel>() {
@@ -17,9 +19,14 @@ class IndexRecommendFragment : BaseFragment<HomeViewModel>() {
 
     override fun initView() {
         adapter = IndexRecommendRecyclerAdapter()
+        swipeRefreshLayout.autoRefresh()
+        swipeRefreshLayout.setEnableLoadMore(false)
+        swipeRefreshLayout.setRefreshHeader(LoadingHeadView(activity!!))
+        swipeRefreshLayout.setHeaderHeight(100f)
         swipeRefreshLayout.setOnRefreshListener {
-            mViewModel.getHomeData()
+            mViewModel.refresh()
         }
+
     }
 
     override fun startObserver() {
@@ -27,13 +34,17 @@ class IndexRecommendFragment : BaseFragment<HomeViewModel>() {
         mViewModel.getUiState()
             .observe(viewLifecycleOwner,
                 Observer<HomeViewModel.HomeUiState?> { t ->
-                    swipeRefreshLayout.isRefreshing = t!!.showProgress
-                    t.data?.also {
+                    t?.data?.also {
+                        swipeRefreshLayout.finishRefresh(true)
                         t.data.observe(viewLifecycleOwner, Observer {
                             adapter.submitList(it)
                         })
                     }
 
+                    t?.errorMsg?.also {
+                        Toast.makeText(activity, "网络错误", Toast.LENGTH_SHORT).show()
+                        swipeRefreshLayout.finishRefresh(false)
+                    }
                 })
         indexRecommendRecycler.adapter = adapter
     }
