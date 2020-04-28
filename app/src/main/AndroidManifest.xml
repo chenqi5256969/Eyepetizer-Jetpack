@@ -17,10 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity
-            android:name=".ScrollingActivity"
-            android:label="@string/title_activity_scrolling"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".ui.activity.base.BaseActivity" />
         <activity android:name=".ui.activity.SplashActivity">

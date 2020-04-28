@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/indexFragment">
-
     <fragment
         android:id="@+id/indexFragment"
         android:name="com.revenco.eyepetizer_jetpack.ui.fragment.index.IndexFragment"
         android:label="fragment_index"
         tools:layout="@layout/fragment_index">
     </fragment>
+
 
 
 </navigation>

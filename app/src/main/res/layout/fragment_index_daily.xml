@@ -10,17 +10,17 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.fragment.index.IndexRecommendFragment">
+       >
 
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
-            android:id="@+id/recommendRefreshLayout"
+            android:id="@+id/dailyRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="10dp">
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/indexRecommendRecycler"
+                android:id="@+id/dailyRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

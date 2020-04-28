@@ -15,7 +15,6 @@ import com.revenco.eyepetizer_jetpack.databinding.FragmentIndexBinding
 import com.revenco.eyepetizer_jetpack.ktx.invokeTabLocation
 
 class IndexFragment : Fragment() {
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,6 +29,7 @@ class IndexFragment : Fragment() {
         TabLayoutMediator(tabLayoutView, viewPager2View) { tab: TabLayout.Tab, position: Int ->
             tab.text = getTabTitle(position)
         }.attach()
+
         return binding.root
     }
 

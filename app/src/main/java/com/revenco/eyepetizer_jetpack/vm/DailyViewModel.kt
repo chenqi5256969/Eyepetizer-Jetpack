@@ -15,35 +15,36 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HomeViewModel : BaseViewModel() {
-    private var uiState = MutableLiveData<HomeUiState>()
-    private val url = "v2/feed?num=2&udid=26868b32e808498db32fd51fb422d00175e179df&vc=83"
 
-    lateinit var sourceFactory: HandleHomeDataSourceFactory
+class DailyViewModel : BaseViewModel() {
+    private var uiState = MutableLiveData<DailyUiState>()
+    private val url = "v2/feed?date=1587949200000&num=1"
 
-    fun getUiState(): MutableLiveData<HomeUiState> {
+    lateinit var sourceFactory: HandleDailyDataSourceFactory
+
+    fun getUiState(): MutableLiveData<DailyUiState> {
         return uiState
     }
 
-    fun getHomeData() {
+    fun getDailyData() {
         viewModelScope.launch(Dispatchers.IO)
         {
             withContext(Dispatchers.Main)
             {
-                providerHomeUiState(showProgress = true)
+                providerDailyUiState(showProgress = true)
             }
             val homeData = HomeRepository().getHomeData(url)
             withContext(Dispatchers.Main)
             {
                 if (homeData is RESULT.OnSuccess) {
                     sourceFactory =
-                        HandleHomeDataSourceFactory(homeDataResp = homeData.data)
+                        HandleDailyDataSourceFactory(homeDataResp = homeData.data)
                     val config = PagedList.Config.Builder().setPageSize(2)
                         .setInitialLoadSizeHint(2).build()
                     val liveData = LivePagedListBuilder(sourceFactory, config).build()
-                    providerHomeUiState(showProgress = false, data = liveData)
+                    providerDailyUiState(showProgress = false, data = liveData)
                 } else if (homeData is RESULT.OnError) {
-                    providerHomeUiState(
+                    providerDailyUiState(
                         showProgress = false,
                         errorCode = homeData.errcode,
                         errorMsg = homeData.errMsg
@@ -60,30 +61,30 @@ class HomeViewModel : BaseViewModel() {
             val config = PagedList.Config.Builder().setPageSize(2)
                 .setInitialLoadSizeHint(2).build()
             val liveData = LivePagedListBuilder(sourceFactory, config).build()
-            providerHomeUiState(showProgress = false, data = liveData)
+            providerDailyUiState(showProgress = false, data = liveData)
         } else {
-            getHomeData()
+            getDailyData()
         }
     }
 
-    private fun providerHomeUiState(
+    private fun providerDailyUiState(
         showProgress: Boolean = true,
         data: LiveData<PagedList<HomeDataResp.Issue.Item>>? = null,
         errorMsg: String? = null,
         errorCode: String? = null
     ) {
-        val homeUiState = HomeUiState(showProgress, data, errorMsg, errorCode)
-        uiState.value = homeUiState
+        val dailyUiState = DailyUiState(showProgress, data, errorMsg, errorCode)
+        uiState.value = dailyUiState
     }
 
-    data class HomeUiState constructor(
+    data class DailyUiState constructor(
         val showProgress: Boolean,
         val data: LiveData<PagedList<HomeDataResp.Issue.Item>>? = null,
         val errorMsg: String? = null,
         val errorCode: String? = null
     )
 
-    inner class HandleHomeDataSourceFactory constructor(private val homeDataResp: HomeDataResp) :
+    inner class HandleDailyDataSourceFactory constructor(private val homeDataResp: HomeDataResp) :
         DataSource.Factory<String, HomeDataResp.Issue.Item>() {
         val sourceLiveData = MutableLiveData<ItemKeyedSubredditDataSource>()
         override fun create(): DataSource<String, HomeDataResp.Issue.Item> {

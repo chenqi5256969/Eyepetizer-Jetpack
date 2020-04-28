@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -15,6 +13,9 @@
             name="data"
             type="com.revenco.eyepetizer_jetpack.net.bean.resp.HomeDataResp.Issue.Item.Data" />
 
+        <variable
+            name="TimeUtils"
+            type="com.revenco.eyepetizer_jetpack.utils.TimeUtils" />
 
     </data>
 
@@ -25,7 +26,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
             app:cardCornerRadius="10dp"
             app:cardElevation="6dp"
@@ -35,7 +36,7 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/bigImage"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:onClick="@{textClickListener}"
                 android:scaleType="fitXY"
@@ -44,8 +45,29 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_gravity="left"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/daily_label" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_play_circle_filled_black_24dp" />
+
+
+            <TextView
+                android:id="@+id/timeShow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|bottom"
+                android:layout_margin="10dp"
+                android:background="@drawable/time_show_shape"
+                android:padding="6dp"
+                android:text="@{TimeUtils.msecToTime(data.duration)}"
+                android:textColor="@android:color/white"
+                android:textSize="12dp" />
         </androidx.cardview.widget.CardView>
 
         <androidx.appcompat.widget.LinearLayoutCompat

@@ -2,6 +2,7 @@ package com.revenco.eyepetizer_jetpack.ui.fragment.index
 
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.viewpager2.widget.ViewPager2
 import com.revenco.eyepetizer_jetpack.R
 import com.revenco.eyepetizer_jetpack.adapters.IndexRecommendRecyclerAdapter
 import com.revenco.eyepetizer_jetpack.ui.fragment.base.BaseFragment
@@ -18,24 +19,24 @@ class IndexRecommendFragment : BaseFragment<HomeViewModel>() {
     }
 
     override fun initView() {
-        adapter = IndexRecommendRecyclerAdapter()
-        swipeRefreshLayout.autoRefresh()
-        swipeRefreshLayout.setEnableLoadMore(false)
-        swipeRefreshLayout.setRefreshHeader(LoadingHeadView(activity!!))
-        swipeRefreshLayout.setHeaderHeight(100f)
-        swipeRefreshLayout.setOnRefreshListener {
+        val viewPager2 = activity!!.findViewById<ViewPager2>(R.id.viewPager2)
+        adapter = IndexRecommendRecyclerAdapter(viewPager2)
+
+        recommendRefreshLayout.autoRefresh()
+        recommendRefreshLayout.setEnableLoadMore(false)
+        recommendRefreshLayout.setRefreshHeader(LoadingHeadView(activity!!))
+        recommendRefreshLayout.setHeaderHeight(100f)
+        recommendRefreshLayout.setOnRefreshListener {
             mViewModel.refresh()
         }
-
     }
 
     override fun startObserver() {
-        mViewModel.getHomeData()
         mViewModel.getUiState()
             .observe(viewLifecycleOwner,
                 Observer<HomeViewModel.HomeUiState?> { t ->
                     t?.data?.also {
-                        swipeRefreshLayout.finishRefresh(true)
+                        recommendRefreshLayout.finishRefresh(true)
                         t.data.observe(viewLifecycleOwner, Observer {
                             adapter.submitList(it)
                         })
@@ -43,7 +44,7 @@ class IndexRecommendFragment : BaseFragment<HomeViewModel>() {
 
                     t?.errorMsg?.also {
                         Toast.makeText(activity, "网络错误", Toast.LENGTH_SHORT).show()
-                        swipeRefreshLayout.finishRefresh(false)
+                        recommendRefreshLayout.finishRefresh(false)
                     }
                 })
         indexRecommendRecycler.adapter = adapter
