@@ -17,7 +17,5 @@ class Main2Activity : AppCompatActivity() {
         navView.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_LABELED
         val navController = findNavController(R.id.nav_host_fragment)
         navView.setupWithNavController(navController)
-
-
     }
 }

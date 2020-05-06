@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.revenco.eyepetizer_jetpack.ui.fragment.index.IndexFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_index" />
+
+    <fragment
+        android:id="@+id/navigation_community"
+        android:name="com.revenco.eyepetizer_jetpack.ui.fragment.community.CommunityFragment"
+        android:label="@string/title_community"
+        tools:layout="@layout/fragment_community" />
+
+    <fragment
+        android:id="@+id/navigation_notifications"
+        android:name="com.revenco.eyepetizer_jetpack.ui.fragment.notification.NotificationFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_notification" />
+    <fragment
+        android:id="@+id/navigation_publish"
+        android:name="com.revenco.eyepetizer_jetpack.ui.fragment.publish.PublishFragment"
+        tools:layout="@layout/fragment_publish" />
+    <fragment
+        android:id="@+id/navigation_my"
+        android:name="com.revenco.eyepetizer_jetpack.ui.fragment.my.MyFragment"
+        android:label="@string/title_my"
+        tools:layout="@layout/fragment_my" />
+
+</navigation>
