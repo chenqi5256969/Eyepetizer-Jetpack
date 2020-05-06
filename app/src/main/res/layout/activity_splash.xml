@@ -7,11 +7,13 @@
     android:background="@android:color/background_dark"
     tools:context=".ui.activity.SplashActivity">
 
-    <ImageView
 
+    <ImageView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/backImage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:scaleType="fitXY" />
 
     <com.revenco.eyepetizer_jetpack.widget.FontTextView

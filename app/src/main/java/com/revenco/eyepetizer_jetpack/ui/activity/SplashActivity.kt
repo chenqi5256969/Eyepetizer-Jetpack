@@ -5,27 +5,23 @@ import android.animation.AnimatorSet
 import android.animation.FloatEvaluator
 import android.animation.ObjectAnimator
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.revenco.eyepetizer_jetpack.MainActivity
+import com.revenco.eyepetizer_jetpack.Main2Activity
 import com.revenco.eyepetizer_jetpack.R
+import com.revenco.eyepetizer_jetpack.utils.StatusBarUtil
 import kotlinx.android.synthetic.main.activity_splash.*
 
 
 class SplashActivity : AppCompatActivity() {
 
     //随机出现壁纸
-    var wallpaper: Int = 0
+    private var wallpaper: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        StatusBarUtil.setTransparent(this)
         setContentView(R.layout.activity_splash)
-        val decorView = window.decorView
-        val option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-        decorView.systemUiVisibility = option
-        window.statusBarColor = Color.TRANSPARENT
         wallpaper = (0..13).random()
         val resId = resources.getIdentifier("wallpaper_$wallpaper", "drawable", packageName)
         backImage.setImageResource(resId)
@@ -47,7 +43,7 @@ class SplashActivity : AppCompatActivity() {
 
             override fun onAnimationEnd(animation: Animator?) {
                 //进入首页
-                val intent = Intent(this@SplashActivity, MainActivity::class.java)
+                val intent = Intent(this@SplashActivity, Main2Activity::class.java)
                 startActivity(intent)
                 finish()
             }

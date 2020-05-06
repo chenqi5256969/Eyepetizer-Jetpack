@@ -9,7 +9,7 @@ import androidx.paging.PagedList
 import com.revenco.eyepetizer_jetpack.net.bean.resp.HomeDataResp
 import com.revenco.eyepetizer_jetpack.net.bean.resp.base.RESULT
 import com.revenco.eyepetizer_jetpack.repository.HomeRepository
-import com.revenco.eyepetizer_jetpack.repository.ItemKeyedSubredditDataSource
+import com.revenco.eyepetizer_jetpack.repository.MultiItemKeyedSubredditDataSource
 import com.revenco.eyepetizer_jetpack.vm.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,7 +26,7 @@ class DailyViewModel : BaseViewModel() {
         return uiState
     }
 
-    fun getDailyData() {
+    private fun getDailyData() {
         viewModelScope.launch(Dispatchers.IO)
         {
             withContext(Dispatchers.Main)
@@ -86,9 +86,9 @@ class DailyViewModel : BaseViewModel() {
 
     inner class HandleDailyDataSourceFactory constructor(private val homeDataResp: HomeDataResp) :
         DataSource.Factory<String, HomeDataResp.Issue.Item>() {
-        val sourceLiveData = MutableLiveData<ItemKeyedSubredditDataSource>()
+        val sourceLiveData = MutableLiveData<MultiItemKeyedSubredditDataSource>()
         override fun create(): DataSource<String, HomeDataResp.Issue.Item> {
-            val source = ItemKeyedSubredditDataSource(homeDataResp)
+            val source = MultiItemKeyedSubredditDataSource(homeDataResp)
             sourceLiveData.postValue(source)
             return source
         }

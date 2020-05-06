@@ -12,7 +12,6 @@ const val RECOMMEND_FRAGMENT_INDEX = 1
 const val DAILY_FRAGMENT_INDEX = 2
 
 class IndexFragmentAdapter constructor(fragment: Fragment) : FragmentStateAdapter(fragment) {
-
     private val tabFragmentCreator: Map<Int, () -> Fragment> = mapOf(
         FIND_FRAGMENT_INDEX to { IndexFindFragment() },
         RECOMMEND_FRAGMENT_INDEX to { IndexRecommendFragment() },
@@ -27,6 +26,4 @@ class IndexFragmentAdapter constructor(fragment: Fragment) : FragmentStateAdapte
         return tabFragmentCreator[position]?.invoke()
             ?: throw  ArrayIndexOutOfBoundsException("你的fragment越界了")
     }
-
-
 }

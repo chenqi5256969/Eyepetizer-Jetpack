@@ -1,6 +1,9 @@
 package com.revenco.eyepetizer_jetpack.ui.fragment.index
 
+import android.widget.Toast
+import androidx.lifecycle.Observer
 import com.revenco.eyepetizer_jetpack.R
+import com.revenco.eyepetizer_jetpack.adapters.IndexDailyRecyclerAdapter
 import com.revenco.eyepetizer_jetpack.ui.fragment.base.BaseFragment
 import com.revenco.eyepetizer_jetpack.vm.DailyViewModel
 import com.revenco.eyepetizer_jetpack.vm.base.InjectorUtils
@@ -9,11 +12,14 @@ import kotlinx.android.synthetic.main.fragment_index_daily.*
 
 
 class IndexDailyFragment : BaseFragment<DailyViewModel>() {
+    private lateinit var dailyAdapter: IndexDailyRecyclerAdapter
+
     override fun providerVM(): DailyViewModel {
         return InjectorUtils.providerDailyViewModelFactory().create(DailyViewModel::class.java)
     }
 
     override fun initView() {
+        dailyAdapter = IndexDailyRecyclerAdapter()
         dailyRefreshLayout.autoRefresh()
         dailyRefreshLayout.setEnableLoadMore(false)
         dailyRefreshLayout.setRefreshHeader(LoadingHeadView(activity!!))
@@ -24,12 +30,25 @@ class IndexDailyFragment : BaseFragment<DailyViewModel>() {
     }
 
     override fun startObserver() {
-        mViewModel.getDailyData()
+        mViewModel.getUiState()
+            .observe(viewLifecycleOwner,
+                Observer<DailyViewModel.DailyUiState?> { t ->
+                    t?.data?.also {
+                        dailyRefreshLayout.finishRefresh(true)
+                        t.data.observe(viewLifecycleOwner, Observer {
+                            dailyAdapter.submitList(it)
+                        })
+                    }
 
+                    t?.errorMsg?.also {
+                        Toast.makeText(activity, "网络错误", Toast.LENGTH_SHORT).show()
+                        dailyRefreshLayout.finishRefresh(false)
+                    }
+                })
+        dailyRecycler.adapter = dailyAdapter
     }
 
     override fun generateLayout(): Int {
-
         return R.layout.fragment_index_daily
     }
 }

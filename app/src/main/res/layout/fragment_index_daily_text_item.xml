@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="moreClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="data"
+            type="com.revenco.eyepetizer_jetpack.net.bean.resp.HomeDataResp.Issue.Item.Data" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="4dp">
+
+        <com.revenco.eyepetizer_jetpack.widget.FontTextView
+            android:id="@+id/dailyText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{data.text}"
+            android:textColor="@android:color/black"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+</layout>

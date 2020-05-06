@@ -24,6 +24,7 @@ data class HomeDataResp(
         ) {
             data class Data(
                 val dataType: String,
+                val text:String,
                 val id: Int,
                 val title: String,
                 val description: String,
