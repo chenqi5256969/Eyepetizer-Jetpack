@@ -12,7 +12,11 @@ kotlin的协程教程我参考的是这篇文章：
 
 ### 2.viewmodel activity和application不同作用域正确使用方法，可以实现整体toolbar无缝切换，当然这个只是简单的做法。
 
-viewmodel作为最重要的数据持有者，作为使用者的我们，必须得明白viewmodel的职能边界
+viewmodel作为最重要的数据持有者，作为使用者的我们，必须得明白viewmodel的职能边界。
+
+简化原理：我们在初始化viewmodel的时候，需要传入两个参数，其中第一个参数就是ViewModelStoreOwner，
+
+这是一个接口类，说道这里，你应该明白了吧，viewmdel的作用域由ViewModelStoreOwner来进行限定。
 
 ### 3.谷歌在Android Jetpack组件中提供了paging这个分页库组件供我们加载分页数据，
 
@@ -55,8 +59,3 @@ DataSource.invalidate
 ## 不足之处：
 
 ### 首页推荐的复杂布局采用的是recycleview嵌套多个recycleview完成，准备改成阿里的Tangram-Android
-
-
-
-
-
