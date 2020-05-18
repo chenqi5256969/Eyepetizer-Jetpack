@@ -3,6 +3,10 @@ package com.revenco.eyepetizer_jetpack.ktx
 import android.view.Gravity
 import com.google.android.material.tabs.TabLayout
 
+
+
+
+
 fun TabLayout.invokeTabLocation() {
     this.tabMode = TabLayout.MODE_SCROLLABLE
     //根据反射来改变

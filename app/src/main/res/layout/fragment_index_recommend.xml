@@ -15,17 +15,14 @@
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/recommendRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="10dp">
-
+            android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/indexRecommendRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/fragment_index_recommend_item" />
-
+               />
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
     </FrameLayout>
 </layout>

@@ -2,26 +2,23 @@ package com.revenco.eyepetizer_jetpack.ui.fragment.index
 
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.viewpager2.widget.ViewPager2
 import com.revenco.eyepetizer_jetpack.R
 import com.revenco.eyepetizer_jetpack.adapters.IndexRecommendRecyclerAdapter
 import com.revenco.eyepetizer_jetpack.ui.fragment.base.BaseFragment
-import com.revenco.eyepetizer_jetpack.vm.HomeViewModel
 import com.revenco.eyepetizer_jetpack.vm.base.InjectorUtils
+import com.revenco.eyepetizer_jetpack.vm.index.IndexRecommendViewModel
 import com.revenco.eyepetizer_jetpack.widget.LoadingHeadView
 import kotlinx.android.synthetic.main.fragment_index_recommend.*
 
-class IndexRecommendFragment : BaseFragment<HomeViewModel>() {
+class IndexRecommendFragment : BaseFragment<IndexRecommendViewModel>() {
     private lateinit var adapter: IndexRecommendRecyclerAdapter
 
-    override fun providerVM(): HomeViewModel {
-        return InjectorUtils.providerHomeViewModelFactory().create(HomeViewModel::class.java)
+    override fun providerVM(): IndexRecommendViewModel {
+        return InjectorUtils.providerHomeViewModelFactory()
+            .create(IndexRecommendViewModel::class.java)
     }
 
     override fun initView() {
-        val viewPager2 = activity!!.findViewById<ViewPager2>(R.id.viewPager2)
-        adapter = IndexRecommendRecyclerAdapter(viewPager2)
-
         recommendRefreshLayout.autoRefresh()
         recommendRefreshLayout.setEnableLoadMore(false)
         recommendRefreshLayout.setRefreshHeader(LoadingHeadView(activity!!))
@@ -34,20 +31,20 @@ class IndexRecommendFragment : BaseFragment<HomeViewModel>() {
     override fun startObserver() {
         mViewModel.getUiState()
             .observe(viewLifecycleOwner,
-                Observer<HomeViewModel.HomeUiState?> { t ->
-                    t?.data?.also {
+                Observer<IndexRecommendViewModel.HomeUiState?> { t ->
+                    t?.json?.also { json ->
                         recommendRefreshLayout.finishRefresh(true)
-                        t.data.observe(viewLifecycleOwner, Observer {
-                            adapter.submitList(it)
-                        })
+                        //处理json
+                        adapter = IndexRecommendRecyclerAdapter(json)
+                        indexRecommendRecycler.adapter = adapter
                     }
 
                     t?.errorMsg?.also {
-                        Toast.makeText(activity, "网络错误", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(activity, t.errorMsg, Toast.LENGTH_SHORT).show()
                         recommendRefreshLayout.finishRefresh(false)
                     }
                 })
-        indexRecommendRecycler.adapter = adapter
+
     }
 
     override fun generateLayout(): Int {

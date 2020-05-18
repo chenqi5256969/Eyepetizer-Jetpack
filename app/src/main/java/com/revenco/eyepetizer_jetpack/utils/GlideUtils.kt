@@ -19,13 +19,23 @@ class GlideUtils {
     companion object {
         private val options = RequestOptions()
             .centerCrop()
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
             .placeholder(R.drawable.wallpaper_8)
             .error(R.drawable.wallpaper_0)
             .dontAnimate()
 
-
         fun loadImageNormal(context: Context, url: String, imageView: ImageView) {
+            GlideApp.with(context)
+                .load(url)
+                .apply(options)
+                .into(imageView)
+        }
+
+
+        /**
+         * 将图片自适应view
+         */
+        fun loadImageFitView(context: Context, url: String, imageView: ImageView) {
             GlideApp.with(context)
                 .asBitmap()
                 .load(url)
@@ -57,7 +67,6 @@ class GlideUtils {
                         imageView.layoutParams = layoutParams
 
                         GlideApp.with(context).load(url).apply(options).into(imageView)
-
                     }
 
                 })

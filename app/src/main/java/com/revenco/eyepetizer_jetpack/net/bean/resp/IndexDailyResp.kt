@@ -1,6 +1,6 @@
 package com.revenco.eyepetizer_jetpack.net.bean.resp
 
-data class HomeDataResp(
+data class IndexDailyResp(
     val issueList: List<Issue>,
     val nextPageUrl: String,
     val nextPublishTime: Long,

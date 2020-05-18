@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/index_navigation"
+    app:startDestination="@id/indexTabFragment">
+
+    <fragment
+        android:id="@+id/indexTabFragment"
+        android:name="com.revenco.eyepetizer_jetpack.ui.fragment.index.IndexTabFragment"
+        android:label="IndexTabFragment"
+        tools:layout="@layout/fragment_index_tab">
+        <action
+            android:id="@+id/action_indexTabFragment_to_videoDetailFragment"
+            app:destination="@id/videoDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/videoDetailFragment"
+        android:name="com.revenco.eyepetizer_jetpack.ui.fragment.index.VideoDetailFragment"
+        android:label="fragment_video_detail"
+        tools:layout="@layout/fragment_video_detail">
+
+    </fragment>
+</navigation>

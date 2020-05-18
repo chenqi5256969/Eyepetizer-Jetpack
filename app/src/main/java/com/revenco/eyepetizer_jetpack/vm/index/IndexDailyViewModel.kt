@@ -1,4 +1,4 @@
-package com.revenco.eyepetizer_jetpack.vm
+package com.revenco.eyepetizer_jetpack.vm.index
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,34 +6,33 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.revenco.eyepetizer_jetpack.net.bean.resp.HomeDataResp
+import com.revenco.eyepetizer_jetpack.net.bean.resp.IndexDailyResp
 import com.revenco.eyepetizer_jetpack.net.bean.resp.base.RESULT
-import com.revenco.eyepetizer_jetpack.repository.HomeRepository
+import com.revenco.eyepetizer_jetpack.repository.IndexRepository
 import com.revenco.eyepetizer_jetpack.repository.MultiItemKeyedSubredditDataSource
 import com.revenco.eyepetizer_jetpack.vm.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
-class DailyViewModel : BaseViewModel() {
+class IndexDailyViewModel : BaseViewModel() {
     private var uiState = MutableLiveData<DailyUiState>()
     private val url = "v2/feed?date=1587949200000&num=1"
 
-    lateinit var sourceFactory: HandleDailyDataSourceFactory
+    private lateinit var sourceFactory: HandleDailyDataSourceFactory
 
     fun getUiState(): MutableLiveData<DailyUiState> {
         return uiState
     }
 
-    private fun getDailyData() {
+    private fun getIndexDailyData() {
         viewModelScope.launch(Dispatchers.IO)
         {
             withContext(Dispatchers.Main)
             {
                 providerDailyUiState(showProgress = true)
             }
-            val homeData = HomeRepository().getHomeData(url)
+            val homeData = IndexRepository().getIndexDailyData(url)
             withContext(Dispatchers.Main)
             {
                 if (homeData is RESULT.OnSuccess) {
@@ -63,31 +62,36 @@ class DailyViewModel : BaseViewModel() {
             val liveData = LivePagedListBuilder(sourceFactory, config).build()
             providerDailyUiState(showProgress = false, data = liveData)
         } else {
-            getDailyData()
+            getIndexDailyData()
         }
     }
 
     private fun providerDailyUiState(
         showProgress: Boolean = true,
-        data: LiveData<PagedList<HomeDataResp.Issue.Item>>? = null,
+        data: LiveData<PagedList<IndexDailyResp.Issue.Item>>? = null,
         errorMsg: String? = null,
         errorCode: String? = null
     ) {
-        val dailyUiState = DailyUiState(showProgress, data, errorMsg, errorCode)
+        val dailyUiState = DailyUiState(
+            showProgress,
+            data,
+            errorMsg,
+            errorCode
+        )
         uiState.value = dailyUiState
     }
 
     data class DailyUiState constructor(
         val showProgress: Boolean,
-        val data: LiveData<PagedList<HomeDataResp.Issue.Item>>? = null,
+        val data: LiveData<PagedList<IndexDailyResp.Issue.Item>>? = null,
         val errorMsg: String? = null,
         val errorCode: String? = null
     )
 
-    inner class HandleDailyDataSourceFactory constructor(private val homeDataResp: HomeDataResp) :
-        DataSource.Factory<String, HomeDataResp.Issue.Item>() {
+    inner class HandleDailyDataSourceFactory constructor(private val homeDataResp: IndexDailyResp) :
+        DataSource.Factory<String, IndexDailyResp.Issue.Item>() {
         val sourceLiveData = MutableLiveData<MultiItemKeyedSubredditDataSource>()
-        override fun create(): DataSource<String, HomeDataResp.Issue.Item> {
+        override fun create(): DataSource<String, IndexDailyResp.Issue.Item> {
             val source = MultiItemKeyedSubredditDataSource(homeDataResp)
             sourceLiveData.postValue(source)
             return source

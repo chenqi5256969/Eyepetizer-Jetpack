@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.activity_splash.*
 
 
 class SplashActivity : AppCompatActivity() {
-
     //随机出现壁纸
     private var wallpaper: Int = 0
 
@@ -43,9 +42,9 @@ class SplashActivity : AppCompatActivity() {
 
             override fun onAnimationEnd(animation: Animator?) {
                 //进入首页
-                val intent = Intent(this@SplashActivity, Main2Activity::class.java)
-                startActivity(intent)
-                finish()
+                 val intent = Intent(this@SplashActivity, Main2Activity::class.java)
+                  startActivity(intent)
+                  finish()
             }
 
             override fun onAnimationCancel(animation: Animator?) {

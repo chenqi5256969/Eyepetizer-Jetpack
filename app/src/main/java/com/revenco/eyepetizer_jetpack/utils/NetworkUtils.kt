@@ -18,7 +18,7 @@ class NetworkUtils {
 
         }
 
-        fun isNetworkConnected(context: Context,typeMoblie : Int): Boolean{
+        private fun isNetworkConnected(context: Context, typeMoblie : Int): Boolean{
             if(!isNetConneted(context)){
                 return false
             }

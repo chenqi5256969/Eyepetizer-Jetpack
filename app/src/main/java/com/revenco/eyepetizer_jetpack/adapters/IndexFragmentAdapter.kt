@@ -7,11 +7,14 @@ import com.revenco.eyepetizer_jetpack.ui.fragment.index.IndexFindFragment
 import com.revenco.eyepetizer_jetpack.ui.fragment.index.IndexRecommendFragment
 import okio.ArrayIndexOutOfBoundsException
 
-const val FIND_FRAGMENT_INDEX = 0
-const val RECOMMEND_FRAGMENT_INDEX = 1
-const val DAILY_FRAGMENT_INDEX = 2
 
 class IndexFragmentAdapter constructor(fragment: Fragment) : FragmentStateAdapter(fragment) {
+    companion object {
+        const val FIND_FRAGMENT_INDEX = 0
+        const val RECOMMEND_FRAGMENT_INDEX = 1
+        const val DAILY_FRAGMENT_INDEX = 2
+    }
+
     private val tabFragmentCreator: Map<Int, () -> Fragment> = mapOf(
         FIND_FRAGMENT_INDEX to { IndexFindFragment() },
         RECOMMEND_FRAGMENT_INDEX to { IndexRecommendFragment() },

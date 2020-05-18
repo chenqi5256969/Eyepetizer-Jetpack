@@ -4,6 +4,8 @@ import com.revenco.eyepetizer_jetpack.vm.factory.DailyModelFactory
 import com.revenco.eyepetizer_jetpack.vm.factory.HomeViewModelFactory
 
 object InjectorUtils {
+
+
     fun providerHomeViewModelFactory(): HomeViewModelFactory {
         return HomeViewModelFactory()
     }
@@ -11,4 +13,6 @@ object InjectorUtils {
     fun providerDailyViewModelFactory(): DailyModelFactory {
         return DailyModelFactory()
     }
+
+
 }

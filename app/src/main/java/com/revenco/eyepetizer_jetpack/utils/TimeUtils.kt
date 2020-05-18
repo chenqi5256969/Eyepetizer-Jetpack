@@ -2,7 +2,7 @@ package com.revenco.eyepetizer_jetpack.utils
 
 
 class TimeUtils {
-
+    companion object {
         /**
          * 将int类型数字转换成时分秒毫秒的格式数据
          *
@@ -47,5 +47,6 @@ class TimeUtils {
                 "" + i
             return retStr.toString()
 
+        }
     }
 }

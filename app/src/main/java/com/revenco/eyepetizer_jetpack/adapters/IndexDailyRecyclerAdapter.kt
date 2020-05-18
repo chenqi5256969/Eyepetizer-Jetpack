@@ -10,12 +10,12 @@ import com.revenco.eyepetizer_jetpack.R
 import com.revenco.eyepetizer_jetpack.config.GlideApp
 import com.revenco.eyepetizer_jetpack.databinding.FragmentIndexDailyTextItemBinding
 import com.revenco.eyepetizer_jetpack.databinding.FragmentIndexRecommendItemBinding
-import com.revenco.eyepetizer_jetpack.net.bean.resp.HomeDataResp
+import com.revenco.eyepetizer_jetpack.net.bean.resp.IndexDailyResp
 import com.revenco.eyepetizer_jetpack.utils.GlideUtils
 import com.revenco.eyepetizer_jetpack.utils.TimeUtils
 
 class IndexDailyRecyclerAdapter :
-    PagedListAdapter<HomeDataResp.Issue.Item, RecyclerView.ViewHolder>(HomeDataRespDiffCallback()) {
+    PagedListAdapter<IndexDailyResp.Issue.Item, RecyclerView.ViewHolder>(HomeDataRespDiffCallback()) {
 
     private val textItem = 0
     private val imageItem = 1
@@ -44,14 +44,12 @@ class IndexDailyRecyclerAdapter :
         when (holder) {
             is ImageViewHolder -> {
                 val data = getItem(position)!!.data
-                val type = data.dataType
                 holder.bind(data)
             }
 
 
             is TextViewHolder -> {
                 val data = getItem(position)!!.data
-                val type = data.dataType
                 holder.bind(data)
             }
 
@@ -81,17 +79,19 @@ class IndexDailyRecyclerAdapter :
         private val bigImageView = binding.bigImage
 
         init {
-            binding.timeUtils = TimeUtils()
             binding.setTextClickListener {
             }
         }
 
-        fun bind(data: HomeDataResp.Issue.Item.Data) {
+        fun bind(data: IndexDailyResp.Issue.Item.Data) {
             val bigImageUrl = data?.cover?.feed
-            GlideUtils.loadImageNormal(bigImageView.context, bigImageUrl, bigImageView)
+            GlideUtils.loadImageFitView(bigImageView.context, bigImageUrl, bigImageView)
             val userIconUrl = data?.author?.icon
             GlideUtils.loadCircleImage(userIconImageView.context, userIconUrl, userIconImageView)
-            binding.data = data
+
+            binding.timeShow.text =TimeUtils.msecToTime(data.duration)
+            binding.titleText.text = data.title
+            binding.titleDesc.text = data.description
         }
 
         fun unBind() {
@@ -103,22 +103,22 @@ class IndexDailyRecyclerAdapter :
     inner class TextViewHolder constructor(val binding: FragmentIndexDailyTextItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(data: HomeDataResp.Issue.Item.Data) {
+        fun bind(data: IndexDailyResp.Issue.Item.Data) {
             binding.data = data
         }
     }
 
-    class HomeDataRespDiffCallback : DiffUtil.ItemCallback<HomeDataResp.Issue.Item>() {
+    class HomeDataRespDiffCallback : DiffUtil.ItemCallback<IndexDailyResp.Issue.Item>() {
         override fun areItemsTheSame(
-            oldItem: HomeDataResp.Issue.Item,
-            newItem: HomeDataResp.Issue.Item
+            oldItem: IndexDailyResp.Issue.Item,
+            newItem: IndexDailyResp.Issue.Item
         ): Boolean {
             return oldItem.data.id == newItem.data.id
         }
 
         override fun areContentsTheSame(
-            oldItem: HomeDataResp.Issue.Item,
-            newItem: HomeDataResp.Issue.Item
+            oldItem: IndexDailyResp.Issue.Item,
+            newItem: IndexDailyResp.Issue.Item
         ): Boolean {
             return oldItem.data.id == newItem.data.id
         }
