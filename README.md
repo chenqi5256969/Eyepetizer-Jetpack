@@ -59,3 +59,17 @@ DataSource.invalidate
 ## 不足之处：
 
 ### 首页推荐的复杂布局采用的是recycleview嵌套多个recycleview完成，准备改成阿里的Tangram-Android
+
+## 踩过的坑：
+
+1.最开始的时候，我是Navigation+bottom的设计，但是Navigation在底部切换再返回，就会重新执行oncereatview的方法，用户体验及其不好，虽然可以更改，但是需要复制大片源码，侵入太高，就pass掉了。
+
+2.在实现首页复杂布局中，最开始的设计是利用Recyclerview的spansizeup来完成，但是研究过开眼api之后，与业务需要完全不符，从而pass，recycleview嵌套多个recycleview其实也不符合，最近尝试使用阿里的Tangram看能不能解决这个问题。
+
+## 最后感谢开眼api：
+
+每日推荐：[ http://baobab.kaiyanapp.com/api/v5/index/tab/allRec]()
+
+发现更多：[ http://baobab.kaiyanapp.com/api/v7/index/tab/discovery]()
+
+日报精选：[http://baobab.kaiyanapp.com/api/v2/feed?date=1587949200000&num=1]()
